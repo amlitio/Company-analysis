@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company Analysis</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <h1>Company Analysis</h1>
+    <form action="/analyze" method="post">
+        <label for="ticker">Enter a ticker symbol:</label>
+        <input type="text" id="ticker" name="ticker">
+        <input type="submit" value="Analyze">
+    </form>
+    <div id="result"></div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
