@@ -1,1 +1,4 @@
-
+flask
+aiohttp
+beautifulsoup4
+openai
