@@ -1,12 +1,10 @@
-
 import os
-from quart import Quart, request, jsonify, render_template
+import streamlit as st
 import aiohttp
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 import openai
 
-app = Quart(__name__)
 openai.api_key = os.getenv('OPENAI_API_KEY')
 cache = {}
 
@@ -43,27 +41,12 @@ async def generate(ticker):
         response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=500)
         return {'ticker': ticker, 'financial_data': financial_data, 'analysis': response.choices[0].text.strip()}
 
-@app.route('/analyze', methods=['POST'])
-async def analyze():
-    # api_key = request.headers.get('X-Api-Key')
-    # if not api_key:
-    #     return jsonify({'error': 'Unauthorized'}), 401
-    ticker = (await request.form)['ticker']
-    if not ticker:
-        return jsonify({'error': 'Missing ticker'}), 400
+ticker = st.text_input('Enter ticker symbol:')
+if ticker:
     if ticker in cache:
-        return cache[ticker]
-    try:
-        response = await generate(ticker)
-        cache[ticker] = response
-        return response
-    except Exception as e:
-        return jsonify({'error': 'Data fetch failed'}), 500
-
-@app.route('/')
-async def index():
-    return await render_template('index.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        result = cache[ticker]
+    else:
+        result = await generate(ticker)
+        cache[ticker] = result
+    st.write(result)
 
