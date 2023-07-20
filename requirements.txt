@@ -2,3 +2,7 @@ flask
 aiohttp
 beautifulsoup4
 openai
+quart
+requests 
+jsonify
+render_template
