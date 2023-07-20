@@ -43,7 +43,15 @@ async def generate(ticker):
         return {'ticker': ticker, 'financial_data': financial_data, 'analysis': response.choices[0].text.strip()}
 
 def run_async_function(func):
-    return asyncio.get_event_loop().run_until_complete(func)
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError as ex:
+        if "There is no current event loop in thread" in str(ex):
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        else:
+            raise
+    return loop.run_until_complete(func)
 
 ticker = st.text_input('Enter ticker symbol:')
 if ticker:
