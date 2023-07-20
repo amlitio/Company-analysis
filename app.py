@@ -4,6 +4,7 @@ import aiohttp
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 import openai
+import asyncio
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 cache = {}
@@ -41,12 +42,14 @@ async def generate(ticker):
         response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=500)
         return {'ticker': ticker, 'financial_data': financial_data, 'analysis': response.choices[0].text.strip()}
 
+def run_async_function(func):
+    return asyncio.get_event_loop().run_until_complete(func)
+
 ticker = st.text_input('Enter ticker symbol:')
 if ticker:
     if ticker in cache:
         result = cache[ticker]
     else:
-        result = await generate(ticker)
+        result = run_async_function(generate(ticker))
         cache[ticker] = result
     st.write(result)
-
