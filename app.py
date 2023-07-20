@@ -5,8 +5,8 @@ from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 import openai
 import asyncio
+from datetime import date
 
-#openai.api_key = os.getenv('OPENAI_API_KEY')
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 cache = {}
 
@@ -56,9 +56,10 @@ def run_async_function(func):
 
 ticker = st.text_input('Enter ticker symbol:')
 if ticker:
-    if ticker in cache:
-        result = cache[ticker]
+    current_date = date.today()
+    if ticker in cache and cache[ticker]['date'] == current_date:
+        result = cache[ticker]['result']
     else:
         result = run_async_function(generate(ticker))
-        cache[ticker] = result
+        cache[ticker] = {'date': current_date, 'result': result}
     st.write(result)
