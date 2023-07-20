@@ -6,8 +6,8 @@ from bs4 import BeautifulSoup
 import openai
 import asyncio
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
-#openai.api_key = st.secrets["OPENAI_API_KEY"]
+#openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 cache = {}
 
 async def fetch(session, url):
