@@ -40,7 +40,7 @@ async def generate(ticker):
         Explore the company's expansion into renewable energy projects and its recent geographical market entries.
         Recommend specific strategic measures for the company to enhance its performance.
         """
-        response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=500)
+        response = openai.Completion.create(engine="text-davinci-002", prompt=prompt, max_tokens=800)
         return {'ticker': ticker, 'financial_data': financial_data, 'analysis': response.choices[0].text.strip()}
 
 def run_async_function(func):
